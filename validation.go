@@ -35,6 +35,7 @@ func Validation() string {
 			// JustifyValidation(i)
 			reverseFlag = true
 		} else if !stringFlag {
+			CheckLetter(os.Args[i])
 			stringFlag = true
 		} else if stringFlag && !fsFlag {
 			fsFlag = true
@@ -42,7 +43,7 @@ func Validation() string {
 			Error()
 		}
 	}
-	if !stringFlag {
+	if !stringFlag && !reverseFlag {
 		Error()
 	} else if (fsFlag || reverseFlag || alignFlag) && val != "yes" {
 		val += "W"
@@ -54,7 +55,7 @@ func Validation() string {
 		}
 	}
 	if reverseFlag {
-		val += "R"
+		val = "Reverse"
 	}
 
 	return val

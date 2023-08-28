@@ -18,7 +18,12 @@ func main() {
 		index = len(os.Args) - 2
 	}
 
-	ascii.CheckLetter(os.Args[index])
+	if strings.Contains(validation, "R") {
+		reverseWord := strings.ToLower(ascii.ReturnFlag("--reverse="))
+		ascii.ReadWords(reverseWord)
+		return
+
+	}
 	WordsInArr := strings.Split(os.Args[index], "\\n")
 	fileName := "standard"
 	if (len(os.Args) == 3 && validation == "yes") || (len(os.Args) == 4 && !strings.Contains(validation, "W")) || (strings.Contains(validation, "F")) {
@@ -42,6 +47,7 @@ func main() {
 	if strings.Contains(validation, "J") {
 		align = strings.ToLower(ascii.ReturnFlag("--align="))
 	}
+
 	if strings.Contains(validation, "output") {
 		var test [][]string
 		ascii.WriteFile(test, FirstWord, validation, align, 1)
