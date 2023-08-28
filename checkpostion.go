@@ -15,7 +15,6 @@ func CheckPostion(Text1, color, letterLenA, validation string) ([]int, []string)
 	for i := 0; i < len(Text1); i++ {
 		_, after, found := strings.Cut(TheWord, letterLenA)
 		if found == true {
-			color = color
 			nbr = append(nbr, (len(Text1) - len(after) - len(letterLenA)))
 			colors = append(colors, color)
 			TheWord = after
