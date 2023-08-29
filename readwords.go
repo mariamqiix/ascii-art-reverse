@@ -14,44 +14,44 @@ func ReadWords(fileName string) [][]string {
 	for FileScanner.Scan() {
 		Line = append(Line, strings.Split(FileScanner.Text(), ""))
 	}
-
-	width := TakingTheWidth(Line)
-
 	var AllLeters [][]string
 	for i := 32; i < 126; i++ {
 		AllLeters = append(AllLeters, ReadLetter(byte(i), "standard"))
 	}
-	var num []int
-	end := true
-	for end {
-		for i := 0; i < 94; i++ {
-			if Hi(width, Line, AllLeters[i]) {
-				num = append(num, i+32)
-				fmt.Println(i + 32)
-				var test [][]string
-				test = append(test, AllLeters[i])
-				startIndex := TakingTheWidth(test) + 1
-				EndIndex := TakingTheWidth(Line)
-				if EndIndex-startIndex > 1 {
-					Line = Terimming(startIndex, EndIndex, Line)
-				} else {
-					end = false
-				}
+	for i := 32; i < 126; i++ {
+		AllLeters = append(AllLeters, ReadLetter(byte(i), "shadow"))
+	}
+	for i := 32; i < 126; i++ {
+		AllLeters = append(AllLeters, ReadLetter(byte(i), "thinkertoy"))
+	}
+	var words []string
+	for len(Line[0]) > 0 {
+		n := 0
+		find := false
+		for i := 0; i < len(AllLeters); i++ {
+			if i == 94 || i == 188 {
+				n++
+			}
+			if Hi(Line, AllLeters[i]) {
+				words = append(words, string(i+32-(94*n)))
+				Terimming(len(AllLeters[i][0]), len(Line[0]), Line)
+				find = true
 				break
 			}
 		}
+		if !find {
+			Error()
+		}
 	}
-	fmt.Print(num)
-	fmt.Println(string(num[0]))
+	for i := 0; i < len(words); i++ {
+		fmt.Print(words[i])
+	}
 	ReadFile.Close()
 	return Line
 }
 
-func Hi(width int, Line [][]string, AllLeters []string) bool {
-	var test [][]string
-	test = append(test, AllLeters)
-
-	for n := 0; n < TakingTheWidth(test) && n < TakingTheWidth(Line); n++ {
+func Hi(Line [][]string, AllLeters []string) bool {
+	for n := 0; n < len(AllLeters[0]) && n < len(Line[0]); n++ {
 		for w := 0; w < len(Line); w++ {
 			if Line[w][n] != string(AllLeters[w][n]) {
 				return false
@@ -61,20 +61,8 @@ func Hi(width int, Line [][]string, AllLeters []string) bool {
 	return true
 }
 
-func Terimming(startIndex, EndIndex int, Line [][]string) [][]string {
-	var Line2 [][]string
+func Terimming(startIndex, EndIndex int, Line [][]string) {
 	for i := 0; i < len(Line); i++ {
-		Line2 = append(Line2, Line[i][startIndex:EndIndex])
+		Line[i] = Line[i][startIndex:EndIndex]
 	}
-	return Line2
-}
-
-func TakingTheWidth(Line [][]string) int {
-	width := 0
-	for _, row := range Line {
-		if len(row) > width {
-			width = len(row)
-		}
-	}
-	return width
 }

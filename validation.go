@@ -100,8 +100,7 @@ func CheckFont(s string) bool {
 }
 
 func Error() {
-	fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]")
-	fmt.Println("Example: go run . --align=right something standard")
+	fmt.Println("Usage: go run . [OPTION]\nEX: go run . --reverse=<fileName>")
 	os.Exit(0)
 }
 
