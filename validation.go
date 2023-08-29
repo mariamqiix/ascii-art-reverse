@@ -34,10 +34,13 @@ func Validation() string {
 		} else if strings.Index(os.Args[i], "--reverse=") == 0 && !stringFlag && !reverseFlag {
 			// JustifyValidation(i)
 			reverseFlag = true
-		} else if !stringFlag {
+		} else if !stringFlag && !reverseFlag {
 			CheckLetter(os.Args[i])
 			stringFlag = true
 		} else if stringFlag && !fsFlag {
+			if !CheckFont(os.Args[i]) {
+				Error()
+			}
 			fsFlag = true
 		} else {
 			Error()
@@ -45,7 +48,7 @@ func Validation() string {
 	}
 	if !stringFlag && !reverseFlag {
 		Error()
-	} else if (fsFlag || reverseFlag || alignFlag) && val != "yes" {
+	} else if (fsFlag || alignFlag) && val != "yes" {
 		val += "W"
 		if fsFlag {
 			val += "F"

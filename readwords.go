@@ -2,12 +2,12 @@ package ascii
 
 import (
 	"bufio"
-	"fmt"
 	"os"
+	"fmt"
 	"strings"
 )
 
-func ReadWords(fileName string) [][]string {
+func ReadWords(fileName string) []string {
 	ReadFile, _ := os.Open(fileName)
 	FileScanner := bufio.NewScanner(ReadFile)
 	var Line [][]string
@@ -46,23 +46,31 @@ func ReadWords(fileName string) [][]string {
 	for i := 0; i < len(words); i++ {
 		fmt.Print(words[i])
 	}
+	fmt.Println()
 	ReadFile.Close()
-	return Line
+	return words
 }
 
 func Hi(Line [][]string, AllLeters []string) bool {
-	for n := 0; n < len(AllLeters[0]) && n < len(Line[0]); n++ {
+	for n := 0; n < len(AllLeters[0]); n++ {
 		for w := 0; w < len(Line); w++ {
 			if Line[w][n] != string(AllLeters[w][n]) {
 				return false
 			}
 		}
+		if len(AllLeters[0]) > len(Line[0]) {
+			return false
+		}
 	}
 	return true
 }
 
-func Terimming(startIndex, EndIndex int, Line [][]string) {
+func Terimming(startIndex, endIndex int, Line [][]string) {
 	for i := 0; i < len(Line); i++ {
-		Line[i] = Line[i][startIndex:EndIndex]
+		if len(Line[i]) >= endIndex {
+			Line[i] = Line[i][startIndex:endIndex]
+		} else {
+			Error()
+		}
 	}
 }

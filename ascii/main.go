@@ -21,16 +21,12 @@ func main() {
 	if strings.Contains(validation, "R") {
 		reverseWord := strings.ToLower(ascii.ReturnFlag("--reverse="))
 		ascii.ReadWords(reverseWord)
-		return
-
+		os.Exit(0)
 	}
 	WordsInArr := strings.Split(os.Args[index], "\\n")
 	fileName := "standard"
 	if (len(os.Args) == 3 && validation == "yes") || (len(os.Args) == 4 && !strings.Contains(validation, "W")) || (strings.Contains(validation, "F")) {
 		fileName = strings.ToLower(os.Args[index+1])
-		if !ascii.CheckFont(fileName) {
-			ascii.Error()
-		}
 	}
 
 	if !(ascii.CheckTextSizeWithWidth(WordsInArr, fileName)) {
