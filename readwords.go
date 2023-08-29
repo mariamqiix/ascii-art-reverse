@@ -8,7 +8,11 @@ import (
 )
 
 func ReadWords(fileName string) []string {
-	ReadFile, _ := os.Open(fileName)
+	ReadFile, err := os.Open(fileName+".txt")
+	if err != nil {
+		fmt.Println(err)
+		Error()
+	}
 	FileScanner := bufio.NewScanner(ReadFile)
 	var Line [][]string
 	for FileScanner.Scan() {

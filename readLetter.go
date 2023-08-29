@@ -3,19 +3,21 @@ package ascii
 import (
 	"bufio"
 	"os"
+	"fmt"
 )
 
 func ReadLetter(Text1 byte, fileName string) []string {
-	//buffio object, to open and read the file
-	ReadFile, _ := os.Open(fileName + ".txt")
-	FileScanner := bufio.NewScanner(ReadFile)
 	var Letter []string
+	ReadFile, err := os.Open(fileName + ".txt")
+	if err != nil {
+		fmt.Println(err)
+		Error()
+	}
+	FileScanner := bufio.NewScanner(ReadFile)
 	stop := 1
-	i := 0
-	a := (int(Text1)-32)*9 + 2
-	for FileScanner.Scan() {
-		i++
-		if i >= a {
+	letterLength := (int(Text1)-32)*9 + 2
+	for i := 1; FileScanner.Scan(); i++ {
+		if i >= letterLength {
 			stop++
 			Letter = append(Letter, FileScanner.Text())
 			if stop > 8 {
