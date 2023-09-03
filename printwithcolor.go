@@ -3,6 +3,7 @@ package ascii
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 func PrintWithColor(Words [][]string, color, Text1, letter1, validation, align string, count int) {
@@ -13,7 +14,7 @@ func PrintWithColor(Words [][]string, color, Text1, letter1, validation, align s
 		index := 0
 		stop := 0
 		for n := 0; n < len(Words); n++ {
-			if letter1 != "NO!!-" {
+			if letter1 != "" {
 				if len(positions) != 0 {
 					if positions[index] == n {
 						FlagB = true
@@ -21,7 +22,7 @@ func PrintWithColor(Words [][]string, color, Text1, letter1, validation, align s
 					if FlagB {
 						colorB = colors[index]
 						stop++
-						if (stop == len(letter1) && colorB == color) || ((validation == "colorW2L" || validation == "colorW2LF") && stop == len(os.Args[4]) && color != colors[index]) {
+						if (stop == len(letter1) && colorB == color) || (strings.Contains(validation, "2") && stop == len(os.Args[4]) && color != colors[index]) {
 							FlagB = false
 							stop = 0
 							if index+1 < len(positions) {

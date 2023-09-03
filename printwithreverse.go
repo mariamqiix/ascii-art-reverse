@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func ReadWords(fileName string) []string {
+func PrintWithReverse(fileName string) []string {
 	ReadFile, err := os.Open(fileName+".txt")
 	if err != nil {
 		fmt.Println(err)
