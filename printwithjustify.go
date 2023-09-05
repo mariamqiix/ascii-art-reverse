@@ -6,17 +6,13 @@ import (
 )
 
 func PrintWithJustify(Words [][]string, align string, n, w, count int) string {
-	textSize := ""
-	spaceSize := 1
-	width := width() - 1
-
+	textSize, spaceSize, width := "", 1, width()-1
 	for n := 0; n < len(Words); n++ {
 		textSize += Words[n][3]
 	}
 	if len(textSize) < width {
 		spaceSize = width - len(textSize)
 	}
-
 	if align == "right" && n == 0 {
 		return fmt.Sprintf(strings.Repeat(" ", spaceSize) + Words[n][w])
 	} else if align == "center" && n == 0 {

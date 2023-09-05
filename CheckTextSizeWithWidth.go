@@ -1,15 +1,37 @@
 package ascii
 
-func CheckTextSizeWithWidth(s []string, filename string) bool {
+import (
+	"log"
+	"os"
+	"os/exec"
+	"strconv"
+	"strings"
+)
+
+func CheckTextSizeWithWidth(word []string, filename string) bool {
 	width := width()
-	for _, m := range s {
-		j := ""
-		for _, c := range m {
-			j += ReadLetter(byte(c), filename)[0]
+	for _, char := range word {
+		wordWfont := ""
+		for _, char2 := range char {
+			wordWfont += ReadLetter(byte(char2), filename)[0]
 		}
-		if len(j) > width {
+		if len(wordWfont) > width {
 			return false
 		}
 	}
 	return true
+}
+
+func width() int {
+	cmd := exec.Command("stty", "size")
+	cmd.Stdin = os.Stdin
+	out, err := cmd.Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	width, err := strconv.Atoi(strings.Split(strings.TrimSpace(string(out)), " ")[1])
+	if err != nil {
+		log.Fatal(err)
+	}
+	return width
 }
