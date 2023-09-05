@@ -56,7 +56,7 @@ func Validation() (string, string, string, string, string, string, string, strin
 			Error()
 		}
 	}
-	if Letter != "" {
+	if colorW2Lflag || colorWLflag {
 		LetterExistnce(TheText, Letter)
 	}
 	if !stringFlag && !reverseFlag {
