@@ -6,41 +6,37 @@ import (
 	"strings"
 )
 
-func PrintWithColor(Words [][]string, color, Text1, letter1, validation, align string, count int) {
-	colorB := color
-	positions, colors := CheckPostion(Text1, colorB, letter1, validation)
-	FlagB := false
+func PrintWithColor(Words [][]string, color1, Text, letter1, validation, align string, count int) {
+	positions := CheckColors(Text, color1, letter1, validation)
 	for w := 0; w < 8; w++ {
-		index := 0
-		stop := 0
 		for n := 0; n < len(Words); n++ {
-			if letter1 != "" {
-				if len(positions) != 0 {
-					if positions[index] == n {
-						FlagB = true
-					}
-					if FlagB {
-						colorB = colors[index]
-						stop++
-						if (stop == len(letter1) && colorB == color) || (strings.Contains(validation, "2") && stop == len(os.Args[4]) && color != colors[index]) {
-							FlagB = false
-							stop = 0
-							if index+1 < len(positions) {
-								index++
-							}
-						}
-					} else {
-						colorB = "\033[0m"
-					}
-				} else {
-					colorB = "\033[0m"
-				}
-			}
-			fmt.Print(colorB, PrintWithJustify(Words, align, n, w, count))
+			fmt.Print(positions[n], PrintWithJustify(Words, align, n, w, count))
 		}
 		if w+1 != 8 {
 			fmt.Println()
 		}
 	}
 	fmt.Println()
+}
+
+func CheckColors(Text1, color, letter1, validation string) map[int]string {
+	indexWcolor := make(map[int]string)
+	for i := 0; i < len(Text1); i++ {
+		if i < len(Text1)-1 && Text1[i:i+len(letter1)] == letter1 && letter1 != "" {
+			for j := 0; j < len(letter1); j++ {
+				indexWcolor[i] = color
+			}
+			i += len(letter1) - 1
+		} else if strings.Contains(validation, "2") && i < len(Text1)-1 && Text1[i:i+len(os.Args[4])] == os.Args[4] {
+			for j := 0; j < len(os.Args[4]); j++ {
+				indexWcolor[i] = CheckColor(os.Args[3])
+			}
+			i += len(os.Args[4]) - 1
+		} else if letter1 == "" {
+			indexWcolor[i] = color
+		} else {
+			indexWcolor[i] = "\033[0m"
+		}
+	}
+	return indexWcolor
 }

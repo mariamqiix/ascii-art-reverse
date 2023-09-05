@@ -7,10 +7,10 @@ import (
 )
 
 func CheckColor(userValue string) string {
+	userValue = strings.ToLower(userValue[8:])
 	Colors := map[string]string{"red": "\033[31m", "green": "\033[32m", "yellow": "\033[33m",
 		"blue": "\033[34m", "purple": "\033[35m", "cyan": "\033[36m", "white": "\033[37m",
 		"black": "\033[30m", "orange": "\033[38;5;208m", "\033[0m": "\033[0m"}
-
 	for color, value := range Colors {
 		if color == userValue {
 			return value
