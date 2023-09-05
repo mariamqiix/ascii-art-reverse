@@ -2,13 +2,13 @@ package ascii
 
 import (
 	"bufio"
-	"os"
 	"fmt"
+	"os"
 	"strings"
 )
 
 func PrintWithReverse(fileName string) []string {
-	ReadFile, err := os.Open(fileName+".txt")
+	ReadFile, err := os.Open(fileName + ".txt")
 	if err != nil {
 		fmt.Println(err)
 		Error()
@@ -58,12 +58,9 @@ func PrintWithReverse(fileName string) []string {
 func Hi(Line [][]string, AllLeters []string) bool {
 	for n := 0; n < len(AllLeters[0]); n++ {
 		for w := 0; w < len(Line); w++ {
-			if Line[w][n] != string(AllLeters[w][n]) {
+			if Line[w][n] != string(AllLeters[w][n]) || len(AllLeters[0]) > len(Line[0]) {
 				return false
 			}
-		}
-		if len(AllLeters[0]) > len(Line[0]) {
-			return false
 		}
 	}
 	return true

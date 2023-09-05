@@ -6,32 +6,31 @@ import (
 	"strings"
 )
 
-func Validation() (string, string, string, string, string, string, string) {
+func Validation() (string, string, string, string, string, string, string, string) {
 	val := "color"
 	colorFlag, outputFlag, reverseFlag, fsFlag, alignFlag, stringFlag, colorWLflag, colorW2Lflag := false, false, false, false, false, false, false, false
-	TheText, Letter, reverseFileName, fileName, align, color := "", "", "", "standard", "left", "\033[0m"
+	TheText, Letter, reverseFileName, fileName, align, color, fileOutputName := "", "", "", "standard", "left", "\033[0m", ""
 	for i := 1; i < len(os.Args); i++ {
 		if (len(os.Args) == 6 || len(os.Args) == 7) && strings.Index(os.Args[1], "--color=") == 0 && strings.Index(os.Args[3], "--color=") == 0 && i == 1 {
 			val = "colorW2L"
 			colorW2Lflag = true
-			if strings.ToLower(os.Args[3]) == strings.ToLower(os.Args[1]) { //check if u cant print with same color
+			if ColorValdation(1) == ColorValdation(3) { //check if u cant print with same color
 				fmt.Println("The colors should be different")
 				Error()
 			}
-			ColorValdation(3)
-			ColorValdation(1)
 			LetterExistnce(os.Args[5], os.Args[4])
 			i += 3
 			color = ColorValdation(1)
 			Letter = os.Args[2]
 		} else if strings.Index(os.Args[i], "--output=") == 0 && !stringFlag && !outputFlag {
-			val, outputFlag = "output", true
+			val, outputFlag, fileOutputName = "output", true, os.Args[i][9:]
+			os.Remove(fileOutputName)
 			if (strings.Index(os.Args[i], ".txt") == -1) || len(os.Args[i]) != strings.Index(os.Args[i], ".txt")+4 {
 				fmt.Println("The file name is incorrect")
 				Error()
 			}
 		} else if strings.Index(os.Args[i], "--color=") == 0 && !stringFlag && !colorFlag && !colorW2Lflag {
-			val, colorFlag = "color", true
+			colorFlag = true
 			color = ColorValdation(i)
 		} else if strings.Index(os.Args[i], "--align=") == 0 && !stringFlag && !alignFlag {
 			align, alignFlag = strings.ToLower(strings.TrimPrefix(os.Args[i], "--align=")), true
@@ -68,15 +67,13 @@ func Validation() (string, string, string, string, string, string, string) {
 	}
 	if Letter != "" {
 		LetterExistnce(TheText, Letter)
-
 	}
 	if !stringFlag && !reverseFlag {
 		Error()
 	} else if outputFlag && colorFlag {
-		val = "output"
 		fmt.Println("The colored text can't be print inside the file")
 	}
-	return val, TheText, fileName, Letter, align, reverseFileName, color
+	return val, TheText, fileName, Letter, align, reverseFileName, color, fileOutputName
 }
 
 func ColorValdation(i int) string {
