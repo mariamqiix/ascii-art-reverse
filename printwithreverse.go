@@ -8,7 +8,7 @@ import (
 )
 
 func PrintWithReverse(fileName string) []string {
-	ReadFile, err := os.Open(fileName )
+	ReadFile, err := os.Open(fileName)
 	if err != nil {
 		fmt.Println(err)
 		Error()
