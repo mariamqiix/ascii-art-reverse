@@ -28,10 +28,13 @@ func PrintWithReverse(fileName string) []string {
 	for i := 32; i < 126; i++ {
 		AllLeters = append(AllLeters, ReadLetter(byte(i), "thinkertoy"))
 	}
+	if len(fileLine)%8 != 0 {
+		Error()
+	}
 	var words []string
 	for i := 0; i < len(fileLine); i += 8 {
 		var Line [][]string
-		for j := i; j < i+8; j++ {
+		for j := i; j < i+8 && j < len(fileLine); j++ {
 			Line = append(Line, fileLine[j])
 		}
 		for len(Line[0]) > 0 {
@@ -62,16 +65,18 @@ func PrintWithReverse(fileName string) []string {
 	ReadFile.Close()
 	return words
 }
+
 func Hi(Line [][]string, AllLeters []string) bool {
 	for n := 0; n < len(AllLeters[0]); n++ {
 		for w := 0; w < len(Line); w++ {
-			if len(AllLeters[0]) > len(Line[0]) || Line[w][n] != string(AllLeters[w][n]) {
+			if len(Line[w]) == 0 || len(AllLeters[0]) > len(Line[0]) || Line[w][n] != string(AllLeters[w][n]) {
 				return false
 			}
 		}
 	}
 	return true
 }
+
 func Terimming(startIndex, endIndex int, Line [][]string) {
 	for i := 0; i < len(Line); i++ {
 		if len(Line[i]) >= endIndex {
