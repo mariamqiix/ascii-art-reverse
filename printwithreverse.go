@@ -14,9 +14,9 @@ func PrintWithReverse(fileName string) []string {
 		Error()
 	}
 	FileScanner := bufio.NewScanner(ReadFile)
-	var Line [][]string
+	var fileLine [][]string
 	for FileScanner.Scan() {
-		Line = append(Line, strings.Split(FileScanner.Text(), ""))
+		fileLine = append(fileLine, strings.Split(FileScanner.Text(), ""))
 	}
 	var AllLeters [][]string
 	for i := 32; i < 126; i++ {
@@ -29,32 +29,39 @@ func PrintWithReverse(fileName string) []string {
 		AllLeters = append(AllLeters, ReadLetter(byte(i), "thinkertoy"))
 	}
 	var words []string
-	for len(Line[0]) > 0 {
-		n := 0
-		find := false
-		for i := 0; i < len(AllLeters); i++ {
-			if i == 94 || i == 188 {
-				n++
+	for i := 0; i < len(fileLine); i += 8 {
+		var Line [][]string
+		for j := i; j < i+8; j++ {
+			Line = append(Line, fileLine[j])
+		}
+		for len(Line[0]) > 0 {
+			n := 0
+			find := false
+			for i := 0; i < len(AllLeters); i++ {
+				if i == 94 || i == 188 {
+					n++
+				}
+				if Hi(Line, AllLeters[i]) {
+					words = append(words, string(i+32-(94*n)))
+					Terimming(len(AllLeters[i][0]), len(Line[0]), Line)
+					find = true
+					break
+				}
 			}
-			if Hi(Line, AllLeters[i]) {
-				words = append(words, string(i+32-(94*n)))
-				Terimming(len(AllLeters[i][0]), len(Line[0]), Line)
-				find = true
-				break
+			if !find {
+				Error()
 			}
 		}
-		if !find {
-			Error()
-		}
+		words = append(words, "\n")
 	}
-	for i := 0; i < len(words); i++ {
+
+	for i := 0; i < len(words)-1; i++ {
 		fmt.Print(words[i])
 	}
 	fmt.Println()
 	ReadFile.Close()
 	return words
 }
-
 func Hi(Line [][]string, AllLeters []string) bool {
 	for n := 0; n < len(AllLeters[0]); n++ {
 		for w := 0; w < len(Line); w++ {
@@ -65,7 +72,6 @@ func Hi(Line [][]string, AllLeters []string) bool {
 	}
 	return true
 }
-
 func Terimming(startIndex, endIndex int, Line [][]string) {
 	for i := 0; i < len(Line); i++ {
 		if len(Line[i]) >= endIndex {
