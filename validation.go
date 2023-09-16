@@ -31,12 +31,14 @@ func Validation() (string, string, string, string, string, string, string, strin
 				fmt.Println("align is incorrect, you can use (left, right, center, justify) only")
 				Error()
 			}
-		} else if strings.Index(os.Args[i], "--reverse=") == 0 && !stringFlag && !reverseFlag {
+		} else if strings.Index(os.Args[i], "--reverse=") == 0 && !stringFlag && !reverseFlag  {
 			val, reverseFlag, reverseFileName = "Reverse", true, os.Args[i][10:]
 			if (strings.Index(os.Args[i], ".txt") == -1) || len(os.Args[i]) != strings.Index(os.Args[i], ".txt")+4 {
 				fmt.Println("The file name is incorrect")
 				Error()
-			}
+			} else if len(os.Args) != 2 {
+				Error()
+			} 
 		} else if colorFlag && i+1 < len(os.Args) && !colorWLflag && os.Args[i+1] != "standard" && os.Args[i+1] != "shadow" && os.Args[i+1] != "thinkertoy" {
 			colorWLflag, Letter = true, os.Args[i]
 		} else if !stringFlag && !reverseFlag {
@@ -55,6 +57,10 @@ func Validation() (string, string, string, string, string, string, string, strin
 		} else {
 			Error()
 		}
+	}
+	if alignFlag {
+		TheText = strings.ReplaceAll(TheText, "\\t", "   ")
+		TheText = strings.Join(strings.Fields(TheText)," ")
 	}
 	if colorW2Lflag || colorWLflag {
 		LetterExistnce(TheText, Letter)
