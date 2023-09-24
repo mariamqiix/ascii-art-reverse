@@ -42,7 +42,7 @@ func Validation() (string, string, string, string, string, string, string, strin
 		} else if colorFlag && i+1 < len(os.Args) && !colorWLflag && os.Args[i+1] != "standard" && os.Args[i+1] != "shadow" && os.Args[i+1] != "thinkertoy" {
 			colorWLflag, Letter = true, os.Args[i]
 		} else if !stringFlag && !reverseFlag {
-			TheText, stringFlag = os.Args[i], true
+			TheText, stringFlag = strings.ReplaceAll(os.Args[i], "\\t", "   "), true
 			for g := 0; g < len(TheText); g++ {
 				if TheText[g] > 126 || TheText[g] < 32 {
 					fmt.Println("ERROR: ascii letters only")
@@ -59,7 +59,6 @@ func Validation() (string, string, string, string, string, string, string, strin
 		}
 	}
 	if alignFlag {
-		TheText = strings.ReplaceAll(TheText, "\\t", "   ")
 		TheText = strings.Join(strings.Fields(TheText)," ")
 	}
 	if colorW2Lflag || colorWLflag {
