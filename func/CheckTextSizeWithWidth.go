@@ -8,12 +8,12 @@ import (
 	"strings"
 )
 
-func CheckTextSizeWithWidth(word []string, filename string) bool {
+func CheckTextSizeWithWidth(word []string) bool {
 	width := width()
 	for _, char := range word {
 		wordWfont := ""
 		for _, char2 := range char {
-			wordWfont += ReadLetter(byte(char2), filename)[0]
+			wordWfont += ReadLetter(byte(char2))[0]
 		}
 		if len(wordWfont) > width {
 			return false

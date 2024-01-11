@@ -7,36 +7,55 @@ import (
 	"strings"
 )
 
-func PrintWithReverse(fileName string) []string {
-	ReadFile, err := os.Open(fileName)
+func PrintWithReverse() {
+
+	var fileLine [][]string
+	var AllLeters [][]string
+	var words []string
+
+	ReadFile, err := os.Open(reverseFileName)
+
 	if err != nil {
 		fmt.Println(err)
 		Error()
 	}
+
 	FileScanner := bufio.NewScanner(ReadFile)
-	var fileLine [][]string
+
+	
+
 	for FileScanner.Scan() {
 		fileLine = append(fileLine, strings.Split(FileScanner.Text(), ""))
 	}
-	var AllLeters [][]string
+
+	
 	for i := 32; i < 126; i++ {
-		AllLeters = append(AllLeters, ReadLetter(byte(i), "standard"))
+		reverseFileName = "standard"
+		AllLeters = append(AllLeters, ReadLetter(byte(i)))
 	}
+
 	for i := 32; i < 126; i++ {
-		AllLeters = append(AllLeters, ReadLetter(byte(i), "shadow"))
+		reverseFileName = "shadow"
+		AllLeters = append(AllLeters, ReadLetter(byte(i)))
 	}
+
 	for i := 32; i < 126; i++ {
-		AllLeters = append(AllLeters, ReadLetter(byte(i), "thinkertoy"))
+		reverseFileName = "thinkertoy"
+		AllLeters = append(AllLeters, ReadLetter(byte(i)))
 	}
+
 	if len(fileLine)%8 != 0 {
 		Error()
 	}
-	var words []string
+
+	
 	for i := 0; i < len(fileLine); i += 8 {
 		var Line [][]string
+
 		for j := i; j < i+8 && j < len(fileLine); j++ {
 			Line = append(Line, fileLine[j])
 		}
+
 		for len(Line[0]) > 0 {
 			n := 0
 			find := false
@@ -44,7 +63,7 @@ func PrintWithReverse(fileName string) []string {
 				if i == 94 || i == 188 {
 					n++
 				}
-				if Hi(Line, AllLeters[i]) {
+				if CheckTheLetter(Line, AllLeters[i]) {
 					words = append(words, string(i+32-(94*n)))
 					Terimming(len(AllLeters[i][0]), len(Line[0]), Line)
 					find = true
@@ -55,32 +74,39 @@ func PrintWithReverse(fileName string) []string {
 				Error()
 			}
 		}
+
 		words = append(words, "\n")
 	}
 
 	for i := 0; i < len(words)-1; i++ {
 		fmt.Print(words[i])
 	}
+
 	fmt.Println()
 	ReadFile.Close()
-	return words
+
 }
 
-func Hi(Line [][]string, AllLeters []string) bool {
+func CheckTheLetter(Line [][]string, AllLeters []string) bool {
 	for n := 0; n < len(AllLeters[0]); n++ {
+
 		for w := 0; w < len(Line); w++ {
+
 			if len(Line[w]) == 0 || len(AllLeters[0]) > len(Line[0]) || Line[w][n] != string(AllLeters[w][n]) {
 				return false
 			}
 		}
 	}
+
 	return true
 }
 
 func Terimming(startIndex, endIndex int, Line [][]string) {
+
 	for i := 0; i < len(Line); i++ {
 		if len(Line[i]) >= endIndex {
 			Line[i] = Line[i][startIndex:endIndex]
+
 		} else {
 			Error()
 		}
